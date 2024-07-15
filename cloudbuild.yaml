@@ -1,0 +1,29 @@
+steps:
+  # Install Terraform
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
+    args: 
+      - '-c'
+      - |
+        terraform version
+        terraform fmt environments/_ENV 
+        terraform init
+
+  # Terraform plan
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform plan -out=tfplan
+
+  # Terraform apply (uncomment if you want to apply changes)
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform apply -auto-approve tfplan
+
+# Specify a timeout
+timeout: '1800s'
